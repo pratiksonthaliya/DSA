@@ -1,13 +1,13 @@
 class Solution {
 public:
     bool divideArray(vector<int>& nums) {
-        unordered_map<int, int> mp;
+        vector<bool> isOdd(501, false); 
         for(int &num : nums){
-            mp[num]++;
+            isOdd[num] = !(isOdd[num]);
         }
 
-        for(auto [num, freq] : mp){
-            if((freq&1) == 1){
+        for(int i=0; i<501; i++){
+            if(isOdd[i] == 1){
                 return false;
             }
         }
