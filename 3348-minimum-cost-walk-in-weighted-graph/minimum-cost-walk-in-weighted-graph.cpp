@@ -28,7 +28,7 @@ public:
         parent.resize(n, -1);
         depth.resize(n, 0);
 
-        vector<unsigned int> costs(n, pow(2, 30) - 1);
+        vector<int> costs(n, pow(2, 31) - 1);
         for(auto &edge : edges){
             Union(edge[0], edge[1]);
         }
