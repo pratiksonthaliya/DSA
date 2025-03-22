@@ -1,17 +1,17 @@
 class Solution {
 private: 
-    void dfs(int node, unordered_map<int, vector<int>> &mp, vector<bool> &vis, int &visCt, int &edgeCt){
+    void dfs(int node, unordered_map<int, vector<int>> &mp, vector<bool> &vis, int &nodeCt, int &edgeCt){
         if(vis[node] == 1 || mp.find(node) == mp.end()){
             return;
         }
 
         vis[node] = 1;
-        visCt = visCt + 1;
+        nodeCt = nodeCt + 1;
+        edgeCt = edgeCt + mp[node].size();
 
         for(auto &nn : mp[node]){
-            edgeCt = edgeCt + 1;
             if(!vis[nn]){
-                dfs(nn, mp, vis, visCt, edgeCt);
+                dfs(nn, mp, vis, nodeCt, edgeCt);
             }
         }
     }
@@ -30,13 +30,10 @@ public:
                 ct++;
             }
             else if(!vis[i]){
-                int visCt = 0, edgeCt = 0;
-                dfs(i, mp, vis, visCt, edgeCt);
-                // ct++;
+                int nodeCt = 0, edgeCt = 0;
+                dfs(i, mp, vis, nodeCt, edgeCt);
 
-                cout << visCt << " " << edgeCt << endl;
-
-                if(edgeCt/2 == (visCt*(visCt-1))/2){
+                if(edgeCt/2 == (nodeCt*(nodeCt-1))/2){
                     ct++;
                 }
             }
