@@ -1,53 +1,46 @@
 class Solution {
 private:
     vector<int> parent;
-    vector<int> depth;
-    int find(int node){
-        if(parent[node] == -1){
-            return node;
+    int find(int x){
+        if(parent[x] == x){
+            return x;
+        }
+        return parent[x] = find(parent[x]);
+    }
+    void Union(int x, int y){
+        int p_x = find(x);
+        int p_y = find(y);
+
+        if(p_x == p_y) {
+            return;
         }
 
-        return parent[node] = find(parent[node]);
+        parent[p_x] = p_y;
     }
 
-    void Union(int node1, int node2){
-        int root1 = find(node1);
-        int root2 = find(node2);
-
-        if(root1 == root2) return;
-
-        if(depth[root1] < depth[root2]){
-            swap(root1, root2);
-        }
-
-        parent[root2] = root1;
-        if(depth[root1] == depth[root2]) depth[root1]++;
-    }
 public:
-    vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& queries) {
-        parent.resize(n, -1);
-        depth.resize(n, 0);
-
-        vector<int> costs(n, pow(2, 31) - 1);
+    vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& query) {
+        parent.resize(n);
+        iota(parent.begin(), parent.end(), 0);
         for(auto &edge : edges){
             Union(edge[0], edge[1]);
         }
 
+        vector<int> cost(n, -1);
         for(auto &edge : edges){
-            int root = find(edge[0]);
-            costs[root] &= edge[2];
+            int par = find(edge[0]);
+            cost[par] &= edge[2];
         }
 
         vector<int> ans;
-        for(auto &q : queries){
-            int st = q[0];
-            int en = q[1];
+        for(auto &q : query){
+            int p_x = find(q[0]);
+            int p_y = find(q[1]);
 
-            if(find(st) != find(en)){
+            if(p_x != p_y){
                 ans.push_back(-1);
             } else {
-                int root = find(st);
-                ans.push_back(costs[root]);
+                ans.push_back(cost[p_x]);
             }
         }
 
