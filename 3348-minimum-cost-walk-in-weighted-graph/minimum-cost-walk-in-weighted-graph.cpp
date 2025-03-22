@@ -1,6 +1,6 @@
 class Solution {
 private:
-    vector<int> parent;
+    vector<int> parent, rank;
     int find(int x){
         if(parent[x] == x){
             return x;
@@ -15,11 +15,18 @@ private:
             return;
         }
 
-        parent[p_x] = p_y;
+        if(rank[p_x] > rank[p_y]){
+            parent[p_y] = p_x;
+            rank[p_x]++;
+        } else {
+            parent[p_y] = p_x;
+            rank[p_x]++;
+        }
     }
 
 public:
     vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& query) {
+        rank.resize(n, 1);
         parent.resize(n);
         iota(parent.begin(), parent.end(), 0);
         for(auto &edge : edges){
