@@ -1,24 +1,27 @@
 class Solution {
 private:
-    long long findOps(long long a){
-        long long ops = 0;
-        long long k = 3;
-        long long op = 1;
+    long long findOps(long long n){
+        long long y = 1, ops = 0;
+        for(int i=1; ; i++){
+            if(n <= 0) break;
 
-        while(a > k){
-            a -= k;
-            ops += (k * op);
+            long long lo = (1 << (i-1)) * 1LL * (1 << (i-1));
+            long long hi = (1 << i) * 1LL * (1 << i) - 1;
+            // cout << lo << " " << hi << " " << ops << " " << n << endl;
+            if(hi - lo >= n){
+                lo = 1;
+                hi = n;
+            }
+            
+            ops += (hi - lo + 1) * i;
+            n -= (hi - lo + 1);
 
-            k = k*4;
-            op++; 
-
-            // cout << ops << endl;
+            // cout << lo << " " << hi << " " << ops << " " << n << endl;
         }
+        
+        cout << endl;
 
-        ops += a * op;
-
-        // cout << ops << endl;
-        return ops ;
+        return ops;
     }
 public:
     long long minOperations(vector<vector<int>>& queries) {
