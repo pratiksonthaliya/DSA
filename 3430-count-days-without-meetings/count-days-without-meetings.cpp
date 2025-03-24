@@ -15,20 +15,17 @@ public:
         }
         
         int ans = 0;
-        if(merged[0][0] > 1){
-            ans += merged[0][0] - 1;
-        }
-        cout << ans << " ";
-        for(int i=1; i<merged.size(); i++){
-            if(merged[i][0] > merged[i-1][1]){
+        for(int i=0; i<merged.size(); i++){
+            if(i == 0 && merged[0][0] > 1){
+                ans += (merged[0][0] - 1);
+            }
+            if(i>0 && merged[i][0] > merged[i-1][1]){
                 ans += (merged[i][0] - merged[i-1][1] - 1);
             }
-            cout << ans << " ";
         }
         if(merged[merged.size() - 1][1] < days){
             ans += (days - merged[merged.size() - 1][1]);
         }
-        cout << ans << " ";
 
         return ans;
     }
