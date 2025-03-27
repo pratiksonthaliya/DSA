@@ -3,6 +3,7 @@ public:
     int minimumIndex(vector<int>& nums) {
         int n = nums.size();
 
+        // Boyer Moore's Voting Algorithm
         int maxVal = -1, maxCt = 0;
         for(int i=0; i<n; i++){
             if(maxCt == 0){
@@ -15,6 +16,7 @@ public:
             }
         }
 
+        // Find count of max-frequent element
         maxCt = 0;
         for(int i=0; i<n; i++){
             if(nums[i] == maxVal){
