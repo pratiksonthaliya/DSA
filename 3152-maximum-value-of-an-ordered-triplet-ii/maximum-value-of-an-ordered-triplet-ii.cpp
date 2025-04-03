@@ -6,10 +6,7 @@ public:
 
         for(int i=1; i<n; i++){
             preMax[i] = max(preMax[i-1], 1LL*nums[i-1]);
-        }
-
-        for(int i=n-2; i>=0; i--){
-            postMax[i] = max(postMax[i+1], 1LL*nums[i+1]);
+            postMax[n-1-i] = max(postMax[n-i], 1LL*nums[n-i]);
         }
         
         long long ans = 0;
