@@ -23,7 +23,7 @@ public:
     int countSymmetricIntegers(int low, int high) {
         int ct = 0;
         for(int num = low; num <= high; num++){
-            if(isSymmetric(num)){
+            if(((num > 9 && num < 100) || (num > 1000 && num < 10000)) && isSymmetric(num)){
                 ct++;
             }
         }
