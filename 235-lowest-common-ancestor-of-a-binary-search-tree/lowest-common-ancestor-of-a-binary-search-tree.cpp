@@ -11,7 +11,7 @@
 class Solution {
 private:
     TreeNode* lca(TreeNode* root, TreeNode* a, TreeNode* b){
-        if(!root || root->val == b->val || root->val == b->val) return root;
+        // if(!root || root->val == b->val || root->val == b->val) return root;
 
         if(root->val > b->val) return lca(root->left, a, b);
         else if(root->val < a->val) return lca(root->right, a, b);
