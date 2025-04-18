@@ -1,19 +1,21 @@
 class Solution {
 public:
     string countAndSay(int n) {
-        if(n == 1) return "1";
+        // if(n == 1) return "1";
+        
+        string ans = "1";
+        for(int i=1; i<n; i++){
+            string t;
+            for(int i=0; i<ans.size(); i++){
+                int j = i;
+                while(j<ans.size() && ans[j] == ans[i]) j++;
 
-        string s = countAndSay(n-1);
-        string ans;
+                t += to_string(j-i);
+                t += ans[i];
 
-        for(int i=0; i<s.size(); i++){
-            int j = i;
-            while(j<s.size() && s[j] == s[i]) j++;
-
-            ans += to_string(j-i);
-            ans += s[i];
-
-            i = j-1;
+                i = j-1;
+            }
+            ans = t;
         }
 
         return ans;
