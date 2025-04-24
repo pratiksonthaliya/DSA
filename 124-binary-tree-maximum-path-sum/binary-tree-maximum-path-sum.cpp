@@ -32,8 +32,26 @@ public:
         }
         return {max({left.first,right.first,a}),ans};
     }
+
+    long int ans = INT_MIN;
+    int solve(TreeNode* root){
+        if(!root) return 0;
+
+        long int l = solve(root->left);
+        long int r = solve(root->right);
+
+        // long int res = max({l + r, l, r, 0l});
+        // if(res < 0){
+        //     res = 0;
+        // }
+        ans = max({ans, l + r + root->val});
+
+        return max(max(l, r) + root->val, 0l);
+    }
+
     int maxPathSum(TreeNode* root) {
-        pair<int,int> ans =rec(root);
-        return ans.first;
+        // pair<int,int> ans =rec(root);
+        solve(root);
+        return ans;
     }
 };
