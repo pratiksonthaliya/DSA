@@ -4,7 +4,7 @@ public:
         int m = grid.size(), n = grid[0].size();
 
         if(m == 1){
-            if(n == 2) return grid[0][0] == grid[0][1];
+            // if(n == 2) return grid[0][0] == grid[0][1];
             long long sum = 0;
             vector<long long> pre(n, 0), suf(n, 0);
             for(int i=0; i<n; i++){
@@ -25,9 +25,6 @@ public:
 
             for(int i=1; i<n-1; i++){
                 if(pre[i] - pre[0] == suf[i+1]) return true;
-            }
-
-            for(int i=1; i<n-1; i++){
                 if(suf[i] - suf[n-1] == pre[i-1]) return true;
             }
 
@@ -35,7 +32,7 @@ public:
         }
 
         if(n == 1){
-            if(m == 2) return grid[0][0] == grid[1][0];
+            // if(m == 2) return grid[0][0] == grid[1][0];
             long long sum = 0;
             vector<long long> pre(m, 0), suf(m, 0);
             for(int i=0; i<m; i++){
@@ -49,9 +46,6 @@ public:
                 suf[i] = sum;
             }
 
-            // for(int i=1; i<m-1; i++){
-            //     if(pre[i-1] == suf[i] || pre[i-1] == suf[i+1]) return true;
-            // }
             for(int i=0; i<m; i++){
                 if(i>0 && pre[i-1] == suf[i]) return true;
                 if(i>0 && i<m-1 && pre[i-1] == suf[i+1]) return true;
@@ -59,9 +53,6 @@ public:
 
             for(int i=1; i<m-1; i++){
                 if(pre[i] - pre[0] == suf[i+1]) return true;
-            }
-
-            for(int i=1; i<m-1; i++){
                 if(suf[i] - suf[m-1] == pre[i-1]) return true;
             }
 
