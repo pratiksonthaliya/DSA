@@ -1,33 +1,24 @@
 class Solution {
 private:
-    void dfs(int node, int &len, vector<bool>& vis, vector<vector<int>> &graph){
+    bool isCycle(int node, int par, int &len, vector<bool>& vis, vector<vector<int>> &graph){
         vis[node] = 1;
         len++;
 
-        for(int nn : graph[node]){
+        bool hasCycle = false;
+        for(int &nn : graph[node]){
             if(!vis[nn]){
-                dfs(nn, len, vis, graph);
-            }
-        }
-    }
-
-    bool isCycle(int node, int par, vector<bool>& vis, vector<vector<int>> &graph){
-        vis[node] = 1;
-
-        for(int nn : graph[node]){
-            if(!vis[nn]){
-                return isCycle(nn, node, vis, graph);
+                hasCycle |= isCycle(nn, node, len, vis, graph);
             } else if(par != -1 && nn != par){
-                return true;
+                hasCycle = true;
             }
         }
 
-        return false;
+        return hasCycle;
     }
 public:
     long long maxScore(int n, vector<vector<int>>& edges) {
         vector<vector<int>> graph(n);
-        for(auto edge : edges){
+        for(auto &edge : edges){
             int u = edge[0], v = edge[1];
             graph[u].push_back(v);
             graph[v].push_back(u);
@@ -40,10 +31,10 @@ public:
             if(!vis[i]){
 
                 int len = 0;
-                dfs(i, len, vis, graph);
+                // dfs(i, len, vis, graph);
 
                 vector<bool> vis2(n, 0);
-                bool hasCycle = isCycle(i, -1, vis2, graph);
+                bool hasCycle = isCycle(i, -1, len, vis, graph);
 
                 if(len > 1){
                     lens.push_back({hasCycle, len});
