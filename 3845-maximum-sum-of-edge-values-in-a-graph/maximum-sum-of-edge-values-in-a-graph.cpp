@@ -33,7 +33,7 @@ public:
             graph[v].push_back(u);
         }
 
-        vector<long long> cycleLen, normalLen;
+        vector<pair<bool, long long>> lens; // cycle, len
 
         vector<bool> vis(n, 0);
         for(int i=0; i<n; i++){
@@ -46,23 +46,16 @@ public:
                 bool hasCycle = isCycle(i, -1, vis2, graph);
 
                 if(len > 1){
-                    if(hasCycle){
-                        cycleLen.push_back(len);
-                    } else {
-                        normalLen.push_back(len);
-                    }
+                    lens.push_back({hasCycle, len});
                 }
-
-                // if(len > 1) cout << hasCycle << " " << len << endl;
             }
         }
 
-        sort(normalLen.rbegin(), normalLen.rend());
-        sort(cycleLen.rbegin(), cycleLen.rend());
+        sort(lens.rbegin(), lens.rend());
 
         long long ans = 0;
         int en = n;
-        for(int len : cycleLen){
+        for(auto &[isCycle, len] : lens){
             int st = en - len + 1;
 
             vector<long long> odd, even;
@@ -80,42 +73,10 @@ public:
             }
 
             ans = ans + odd[odd.size()-1]*even[even.size()-1];
-            ans = ans + even[0]*odd[0];
+            if(isCycle) ans = ans + even[0]*odd[0];
 
             en = st - 1;
         }
-
-        for(int len : normalLen){
-            int st = en - len + 1;
-
-            vector<long long> odd, even;
-            for(int i=st; i<=en; i++){
-                if(i&1) odd.push_back(i);
-                else even.push_back(i);
-            }
-
-            for(int i=1; i<odd.size(); i++){
-                ans = (ans + odd[i]*odd[i-1]);
-            }
-
-            for(int i=1; i<even.size(); i++){
-                ans = (ans + even[i]*even[i-1]);
-            }
-
-            ans = ans + odd[odd.size()-1]*even[even.size()-1];
-            // ans = ans + even[0]*odd[odd.size()-1];
-
-            en = st - 1;
-        }
-
-        // for(int x : normalLen){
-        //     cout << x << " ";
-        // }
-        // cout << endl << endl;;
-
-        // for(int x : cycleLen){
-        //     cout << x << " ";
-        // }
 
         return ans;
     }
