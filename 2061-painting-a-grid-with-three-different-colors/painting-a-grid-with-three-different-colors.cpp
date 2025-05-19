@@ -20,7 +20,7 @@ private:
         }
     }
 
-    bool isValid(string &t, string &s){
+    bool isValid(const string &t, const string &s){
         for(int i=0; i<t.size(); i++){
             if(t[i] == s[i]) return false;
         }
@@ -28,7 +28,7 @@ private:
     }
     
     unordered_map<string, int> dp;
-    int solve(string p, int i, int n){
+    int solve(const string &p, int i, int n){
         if(i == n) return 1;
 
         string key = p + "_" + to_string(i);
@@ -38,7 +38,7 @@ private:
         }
 
         int ans = 0;
-        for(string t : prevStates){
+        for(const string &t : prevStates){
             if(isValid(t, p)){
                 ans = (ans + solve(t, i+1, n))%mod;
             }
@@ -52,7 +52,7 @@ public:
         getColumnStates(0, m, t);
 
         int res = 0;
-        for(string s : prevStates){
+        for(const string &s : prevStates){
             res = (res + solve(s, 1, n))%mod;
         }
 
