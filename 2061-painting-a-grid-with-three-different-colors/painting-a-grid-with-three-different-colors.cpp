@@ -2,7 +2,7 @@ class Solution {
 private:
     static constexpr int mod = 1000000007;
     unordered_set<string> prevStates;
-    void getPreviousState(int i, int m, string s){
+    void getColumnStates(int i, int m, string s){
         if(i == m){
             prevStates.insert(s);
             return;
@@ -10,12 +10,12 @@ private:
 
         if(i == 0){
             for(char ch : {'R', 'G', 'B'}){
-                getPreviousState(i+1, m, s + ch);
+                getColumnStates(i+1, m, s + ch);
             }
         } else {
             for(char ch : {'R', 'G', 'B'}){
                 if(s.back() != ch)
-                    getPreviousState(i+1, m, s + ch);
+                    getColumnStates(i+1, m, s + ch);
             }
         }
     }
@@ -43,15 +43,15 @@ private:
                 ans = (ans + solve(t, i+1, n))%mod;
             }
         }
-        
+
         return dp[key] = ans;
     }
 public:
     int colorTheGrid(int m, int n) {
         string t = "";
-        getPreviousState(0, m, t);
+        getColumnStates(0, m, t);
 
-        long res = 0;
+        int res = 0;
         for(string s : prevStates){
             res = (res + solve(s, 1, n))%mod;
         }
