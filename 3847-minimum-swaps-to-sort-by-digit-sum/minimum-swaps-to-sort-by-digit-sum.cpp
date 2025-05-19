@@ -31,10 +31,10 @@ public:
             if(vis[i]) continue;
 
             int cycleLen = 0;
-            int j = i;
-            while(!vis[j]){
-                vis[j] = 1;
-                j = numWithOriginalIdx[j].second;
+            int next = i;
+            while(!vis[next]){
+                vis[next] = 1;
+                next = numWithOriginalIdx[next].second;
                 cycleLen++;
             }
 
