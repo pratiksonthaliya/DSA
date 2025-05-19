@@ -2,22 +2,17 @@ class Solution {
 private:
     static constexpr int mod = 1000000007;
     unordered_set<string> prevStates;
-    void getColumnStates(int i, int m, string s){
+    void getColumnStates(int i, int m, string s, const char &prev){
         if(i == m){
             prevStates.insert(s);
             return;
         }
 
-        if(i == 0){
-            for(char ch : {'R', 'G', 'B'}){
-                getColumnStates(i+1, m, s + ch);
-            }
-        } else {
-            for(char ch : {'R', 'G', 'B'}){
-                if(s.back() != ch)
-                    getColumnStates(i+1, m, s + ch);
-            }
+        for(char ch : {'R', 'G', 'B'}){
+            if(prev != ch)
+                getColumnStates(i+1, m, s + ch, ch);
         }
+        
     }
 
     bool isValid(const string &t, const string &s){
@@ -49,7 +44,7 @@ private:
 public:
     int colorTheGrid(int m, int n) {
         string t = "";
-        getColumnStates(0, m, t);
+        getColumnStates(0, m, t, '#');
 
         int res = 0;
         for(const string &s : prevStates){
