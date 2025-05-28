@@ -10,17 +10,11 @@ public:
 
             diff = min(diff, abs(xr - val));
 
-            cout << val << " " << xr << endl;
-
-            if(xr > val){
-                ct++;
-            }
+            if(xr > val) ct++;
             if(xr == val) ct2++;
 
             ans += max(xr, val);
         }
-
-        cout << ans << " " << diff << endl;
 
         if((ct&1) == 1 && ct2 == 0){
             ans = ans - diff;
