@@ -18,11 +18,24 @@ private:
                 ct += n - (it - left.begin());
             }
         }
+        ans += ct;
         
         // int ct = 0;
         vector<long> merged;
-        while(i < n && j < m){
+        while(i < n || j < m){
             
+            if(i >= n){
+                merged.push_back(right[j]);
+                j++;
+                continue;
+            }
+            
+            if(j >= m){
+                merged.push_back(left[i]);
+                i++;
+                continue;
+            }
+
             if(left[i] <= right[j]){
                 merged.push_back(left[i]);
                 i++;
@@ -33,17 +46,6 @@ private:
             }
         }
         
-        while(i < n){
-            merged.push_back(left[i]);
-            i++;
-        }
-        
-        while(j < m){
-            merged.push_back(right[j]);
-            j++;
-        }
-        
-        ans += ct;
         return merged;
     }
 public:
