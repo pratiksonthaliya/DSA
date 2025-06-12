@@ -11,41 +11,39 @@ private:
         
         int i=0, j=0, n = left.size(), m = right.size();
 
-        int ct = 0;
-        for(long val : right){
-            auto it = upper_bound(left.begin(), left.end(), 2*val);
-            if(it != left.end()){
-                ct += n - (it - left.begin());
-            }
-        }
-        ans += ct;
-        
         // int ct = 0;
-        vector<long> merged;
-        while(i < n || j < m){
-            
-            if(i >= n){
-                merged.push_back(right[j]);
+        // for(long val : right){
+        //     auto it = upper_bound(left.begin(), left.end(), 2*val);
+        //     if(it != left.end()){
+        //         ct += n - (it - left.begin());
+        //     }
+        // }
+        
+        int ct = 0, res = 0;
+        for( ; i < n; i++){
+
+            while(j < m && left[i] > 2*1LL*right[j]){
                 j++;
-                continue;
-            }
-            
-            if(j >= m){
-                merged.push_back(left[i]);
-                i++;
-                continue;
             }
 
+            res += j;
+        }
+
+        vector<long> merged;
+        i = 0, j = 0;
+        while(i < n && j < m){
+
             if(left[i] <= right[j]){
-                merged.push_back(left[i]);
-                i++;
+                merged.push_back(left[i++]);
             } else {
-                // ct += (n - i);
-                merged.push_back(right[j]);
-                j++;
+                merged.push_back(right[j++]);
             }
         }
         
+        while(i < n) merged.push_back(left[i++]);
+        while(j < m) merged.push_back(right[j++]);
+        
+        ans += res;
         return merged;
     }
 public:
