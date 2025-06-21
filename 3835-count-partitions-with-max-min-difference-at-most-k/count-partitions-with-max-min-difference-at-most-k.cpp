@@ -23,11 +23,6 @@ public:
                 i++;
             }
 
-            // long long val = 0;
-            // for(int idx=i; idx<=j; idx++){
-            //     val += dp[idx];
-            // }
-
             long long val = pre[j] - (i == 0 ? 0 : pre[i-1]);
 
             dp[j+1] = val%MOD;
