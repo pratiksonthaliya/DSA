@@ -44,7 +44,7 @@ public:
 
             for(char ch : candidate){
                 string next = curr + ch;
-                if(next.size() > ans.size() && isKRepeatedSubsequence(next, k, s)){
+                if(next.size() > ans.size() && next.size()*k <= s.size() && isKRepeatedSubsequence(next, k, s)){
                     q.push(next);
                 }
             }
