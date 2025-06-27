@@ -1,6 +1,7 @@
 class Solution {
-private:
-    bool isKRepeatedSubsequence(string& t, int k, string &s){
+private:   
+    string s, ans;
+    bool isKRepeatedSubsequence(string& t, int k){
         int i = 0;
         for(char ch : s){
             if(ch == t[i]){
@@ -15,41 +16,47 @@ private:
 
         return 0;
     }
+    void findSubsequence(vector<int>& mp, string t, int k){
+        if(t.size()*k > s.size()){
+            return;
+        }
+
+        for(int i=25; i>=0; i--){
+            if(mp[i] > 0){                
+                mp[i]--;
+                t += (i + 'a');
+
+                if(isKRepeatedSubsequence(t, k)){
+                    if(ans.size() < t.size()){
+                        ans = t;
+                    }
+                    findSubsequence(mp, t, k);
+                }
+
+                mp[i]++;
+                t.pop_back();
+            }
+        }
+
+    }
 public:
     string longestSubsequenceRepeatedK(string s, int k) {
-        vector<int> freq(26);
+        this->s = s;
+        
+        vector<int> freq(26, 0);
         for (char ch : s) {
             freq[ch - 'a']++;
         }
-        vector<char> candidate;
-        for (int i = 25; i >= 0; i--) {
-            if (freq[i] >= k) {
-                candidate.push_back('a' + i);
+
+        vector<int> mp(26, 0);
+        for(int i=25; i>=0; i--){
+            if(freq[i] >= k){
+                mp[i] = freq[i]/k;
             }
         }
 
-        queue<string> q;
-        for(char ch : candidate){
-            q.push(string(1, ch));
-        }
-
-        string ans = "";
-        while(!q.empty()){
-            string curr = q.front();
-            q.pop();
-
-            if(curr.size() > ans.size()){
-                ans = curr;
-            }
-
-            for(char ch : candidate){
-                string next = curr + ch;
-                if(next.size() > ans.size() && next.size()*k <= s.size() && isKRepeatedSubsequence(next, k, s)){
-                    q.push(next);
-                }
-            }
-        }
-
+        string t = "";
+        findSubsequence(mp, t, k);
         return ans;
     }
 };
