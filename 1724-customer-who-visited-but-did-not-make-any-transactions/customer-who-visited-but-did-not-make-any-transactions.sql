@@ -2,7 +2,7 @@
 
 SELECT customer_id, count_no_trans
 FROM (
-    SELECT customer_id, v.visit_id, SUM(CASE WHEN transaction_id IS NULL THEN 1 ELSE 0 END) AS count_no_trans
+    SELECT customer_id, SUM(CASE WHEN transaction_id IS NULL THEN 1 ELSE 0 END) AS count_no_trans
     FROM Visits v
     LEFT JOIN Transactions t
     ON v.visit_id = t.visit_id
