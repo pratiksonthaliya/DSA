@@ -8,13 +8,11 @@ public:
 
         int ans = 0;
         while(i < n && j < m){
-            if(players[i] > trainers[j]){
-                j++;
-            } else {
+            if(players[i] <= trainers[j]){
                 i++; 
-                j++;
                 ans++;
             }
+            j++;
         }
 
         return ans;
