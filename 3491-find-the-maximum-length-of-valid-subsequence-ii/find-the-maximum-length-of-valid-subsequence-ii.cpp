@@ -22,20 +22,19 @@ public:
                 while(i<n && j<m){
                     if(turn){
                         while(i < n && idxs1[i] <= idx) i++;
-                        if(i < n && idxs1[i] > idx) {
-                            ct++;
-                            idx = idxs1[i];
-                        }
-                        turn = !turn;
+                        if(i >= n) break;
+                        ct++;
+                        idx = idxs1[i];
+                        // i++;
                     }
                     else {
                         while(j < m && idxs2[j] <= idx) j++;
-                        if(j < m && idxs2[j] > idx) {
-                            ct++;
-                            idx = idxs2[j];
-                        }
-                        turn = !turn;
+                        if(j >= m) break;
+                        ct++;
+                        idx = idxs2[j];
+                        // j++;
                     }
+                    turn = !turn;
                 }
 
                 ans = max(ans, ct);
