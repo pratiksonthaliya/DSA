@@ -11,21 +11,34 @@ public:
     void addNum(int num) {
 
         sz++;
-        mxPQ.push(num);
+        // PUSH 
+        if(mxPQ.empty() || num <= mxPQ.top()){
+            mxPQ.push(num);
+        } else {
+            mnPQ.push(num);
+        }
 
-        mnPQ.push(mxPQ.top());
-        mxPQ.pop();
-
-        if(mnPQ.size() > mxPQ.size()){
+        //REBALANCE
+        if(mxPQ.size() < mnPQ.size()){
             mxPQ.push(mnPQ.top());
             mnPQ.pop();
+        } else if(mxPQ.size() > mnPQ.size() + 1){
+            mnPQ.push(mxPQ.top());
+            mxPQ.pop();
         }
+
+        // mxPQ.push(num);
+
+        // mnPQ.push(mxPQ.top());
+        // mxPQ.pop();
+
+        // if(mnPQ.size() > mxPQ.size()){
+        //     mxPQ.push(mnPQ.top());
+        //     mnPQ.pop();
+        // }
     }
     
     double findMedian() {
-        
-        //cout << mxPQ.size() << " " << mnPQ.size() << endl;
-
         if(sz&1) return mxPQ.top();
         return (mnPQ.top() + mxPQ.top())/2.0;
     }
