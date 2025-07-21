@@ -5,7 +5,8 @@ public:
         long long hrsUsed = 0;
         for(int i=0; i<piles.size(); i++){
             // hrsUsed = hrsUsed + (piles[i] + mid - 1)/mid;
-            hrsUsed = hrsUsed + (piles[i]/mid + (piles[i]%mid > 0 ? 1 : 0));
+            // hrsUsed = hrsUsed + (piles[i]/mid + (piles[i]%mid > 0 ? 1 : 0));
+            hrsUsed = hrsUsed + ceil(1.0*piles[i]/mid);
             if(hrsUsed > h) return false;
         } 
         return true;
