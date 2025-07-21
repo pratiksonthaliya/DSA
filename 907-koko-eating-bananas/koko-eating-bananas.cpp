@@ -4,26 +4,12 @@ public:
     bool isValid(vector<int>& piles, int h, long long mid){
         long long hrsUsed = 0;
         for(int i=0; i<piles.size(); i++){
-            if(piles[i]%mid == 0){
-                if(hrsUsed + (piles[i]/mid) > h){
-                    return false;
-                }
-                hrsUsed = hrsUsed + (piles[i]/mid); 
-            }
-            
-            else if(piles[i]%mid != 0){
-                if(hrsUsed + (piles[i]/mid) + 1 > h){
-                    return false;
-                }
-                hrsUsed++;
-                hrsUsed = hrsUsed + (piles[i]/mid);
-            }
-            
+            hrsUsed = hrsUsed + (piles[i] + mid - 1)/mid;
+            if(hrsUsed > h) return false;
         } 
         return true;
     }
     int minEatingSpeed(vector<int>& piles, int h) {
-        // sort(piles.begin(), piles.end());
         long long st = 1;
         long long en = *max_element(piles.begin(), piles.end());
         long long ans = -1;
@@ -38,15 +24,17 @@ public:
                 st = mid+1;
             }
         }
-
         return ans;
     }
 };
 
-// 1 
+
+// 10^9 * 10^5
+
+// st = 1 
 
 //2banana/hr
-// {2, 3, 4, 6}
+// {2, 3, 4, 6} -> O(N) ~ 10^5
 
 //3banana/hr
 // {1, 2, 3, 4}
@@ -54,3 +42,4 @@ public:
 //4banana/hr
 // {1, 1, 2, 3} -> kha liya
 
+// en = max_ele = 10^9
