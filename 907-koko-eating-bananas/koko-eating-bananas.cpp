@@ -4,7 +4,8 @@ public:
     bool isValid(vector<int>& piles, int h, long long mid){
         long long hrsUsed = 0;
         for(int i=0; i<piles.size(); i++){
-            hrsUsed = hrsUsed + (piles[i] + mid - 1)/mid;
+            // hrsUsed = hrsUsed + (piles[i] + mid - 1)/mid;
+            hrsUsed = hrsUsed + (piles[i]/mid + (piles[i]%mid > 0 ? 1 : 0));
             if(hrsUsed > h) return false;
         } 
         return true;
@@ -32,6 +33,13 @@ public:
 // 10^9 * 10^5
 
 // st = 1 
+
+// 71 = 71/2 + (71%2 > 0 ? 1 : 0)
+// 11 = 11/3 + (11%3 > 0 ? 1 : 0)
+
+// ceil(11/3) = 3.76
+
+
 
 //2banana/hr
 // {2, 3, 4, 6} -> O(N) ~ 10^5
