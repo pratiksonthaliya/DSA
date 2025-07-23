@@ -17,13 +17,16 @@ private:
 public:
     int maximumGain(string s, int x, int y) {
         int ans = 0;
-        if(x >= y){
-            ans += x*countAndRemove("ab", s);
-            ans += y*countAndRemove("ba", s);
-        } else if(y > x){
-            ans += y*countAndRemove("ba", s);
-            ans += x*countAndRemove("ab", s);
+
+        vector<string> keys = {"ab", "ba"};
+        if(y > x){
+            swap(x, y);
+            swap(keys[0], keys[1]);
         }
+
+        ans += x*countAndRemove(keys[0], s);
+        ans += y*countAndRemove(keys[1], s);
+        
         return ans;
     }
 };
