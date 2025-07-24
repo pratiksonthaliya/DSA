@@ -1,59 +1,89 @@
-
-//No splice 
-// Erasing the element using its iterator (list::erase)
-// Pushing the key to the front (list::push_front)
-// Updating the iterator in the map
-class LRUCache {
-private:
-    int capacity;
-    list<int> lst; //front = most recent, back = least recent
-    unordered_map<int, pair<int, list<int>::iterator>>mp;
+//using Linklist
+class Node {
 public:
-    LRUCache(int capacity) {  
-        this->capacity = capacity;
-    }
-
-    int get(int key) {
-
-        if(mp.find(key) == mp.end()) return -1;// Key not found
-
-        // Remove key from current position
-        lst.erase(mp[key].second);
-        // Add key to front
-        lst.push_front(key);
-        // Update iterator in map
-        mp[key].second = lst.begin();
-
-        return mp[key].first;
-    }
-
-    void put(int key, int value) {
-         // If key already exists
-        if (mp.find(key) != mp.end()) {
-            lst.erase(mp[key].second);
-            lst.push_front(key);
-            mp[key] = {value, lst.begin()};
-        } 
-        // if new key found
-        else {
-
-            if (mp.size() == capacity) {// Check size
-                int lru_key = lst.back();   // least recently used
-                lst.pop_back();            // remove from list
-                mp.erase(lru_key);       // remove from map
-            }
-
-            lst.push_front(key);// Insert new key at front
-            mp[key] = {value, lst.begin()};
-        }
+    int key, val;
+    Node* next;
+    Node* prev;
+    Node(int key, int val) {
+        this->key = key;
+        this->val = val;
+        next = prev = NULL;
     }
 };
 
+class LRUCache {
+private:
+    int capacity;
+    unordered_map<int, Node*> mp;
+    Node *head, *tail;// 2 dummy ptr to avoid unnecessary if-else cond
+    // node->prev | node | node->next
+    // pre and next node is obtain by ptr and we just need to make
+    //link between node->prev and node->next
+    void removeNode(Node* node) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+    //simply add node no need to check cond due to dummy ptr.
+    // [-1,-1]...........[-1,-1]
+    void insertAfterHead(Node* node) {
+        node->next = head->next;
+        node->prev = head;
+        head->next->prev = node;
+        head->next = node;
+    }
+public:
+    //initialize
+    LRUCache(int capacity) {
+        this->capacity = capacity;
 
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        
+        head->next = tail;
+        tail->prev = head;
+    }
+    
+    int get(int key) {
+        if (mp.find(key) == mp.end()) return -1;//not found key
+        Node* node = mp[key];
+        //remove key from list
+        removeNode(node);
+        //make it most recent by adding at front
+        insertAfterHead(node);
+        return node->val;
+    }
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */
+    void put(int key, int value) {
+        if (mp.find(key) != mp.end()) {
+            Node* node = mp[key];
+            //update value if found key
+            node->val = value;
+            //make it most recent by removing & then adding at front
+            removeNode(node);
+            insertAfterHead(node);
+        } 
+        //if key not found need to add 
+        // step1 check for capacity - if full remove LRU then add
+        else {
+            if (mp.size() == capacity) {
+                Node* lru = tail->prev;
+                removeNode(lru);
+                mp.erase(lru->key);
+                delete lru;
+            }
+            //insert new key
+            Node* newNode = new Node(key, value);
+            insertAfterHead(newNode);
+            mp[key] = newNode;
+        }
+    }
+
+    ~LRUCache() {
+        Node* cur = head;
+        while (cur) {
+            Node* next = cur->next;
+            delete cur;
+            cur = next;
+        }
+    }
+};
