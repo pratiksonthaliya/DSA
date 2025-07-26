@@ -1,22 +1,22 @@
 class Solution {
 private:
-    vector<vector<int>> tree;
-    vector<int> subXor;
-    vector<int> inTime, outTime;
+    int tot_xor;
     int timer = 0;
-    int totalXor = 0;
+    vector<int> subTreeXor;
+    vector<int> inTime, outTime;
 
-    void dfs(int node, int parent, vector<int>& nums) {
+    int dfs(int node, int par, vector<int>& nums, vector<vector<int>>& graph){
         inTime[node] = timer++;
-        subXor[node] = nums[node];
-
-        for (int nei : tree[node]) {
-            if (nei == parent) continue;
-            dfs(nei, node, nums);
-            subXor[node] ^= subXor[nei];
+        int xr = nums[node];
+        
+        for(int &nnode : graph[node]){
+            if(nnode == par) continue;
+            // timer++;
+            xr ^= dfs(nnode, node, nums, graph);
         }
 
         outTime[node] = timer++;
+        return subTreeXor[node] = xr;
     }
 
     bool isDescendant(int u, int v) {
@@ -26,47 +26,43 @@ private:
 
 public:
     int minimumScore(vector<int>& nums, vector<vector<int>>& edges) {
-        int n = nums.size();
-        tree.assign(n, {});
-        for (auto& e : edges) {
-            tree[e[0]].push_back(e[1]);
-            tree[e[1]].push_back(e[0]);
+        int N = nums.size();
+        // Make graph
+        vector<vector<int>> graph(N);
+        for(auto &e : edges){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
         }
 
-        subXor.resize(n);
-        inTime.resize(n);
-        outTime.resize(n);
+        // Find subtreeXor and totalXor
+        subTreeXor.assign(N, 0);
+        inTime.assign(N, 0);
+        outTime.assign(N, 0);
+        tot_xor = dfs(0, -1, nums, graph);
 
-        // Do DFS from root 0
-        dfs(0, -1, nums);
-
-        totalXor = subXor[0];
         int minScore = INT_MAX;
+        for (int u = 1; u < N; ++u) {
+            for (int v = u + 1; v < N; ++v) {
+                
+                int a = 0, b = 0, c = 0;
 
-        // Try all pairs of nodes (as edge removal targets)
-        for (int u = 1; u < n; ++u) {
-            for (int v = u + 1; v < n; ++v) {
-                int a, b, c;
-
-                if (isDescendant(u, v)) {
+                if(isDescendant(u, v)){
                     // u is in subtree of v
-                    a = subXor[u];
-                    b = subXor[v] ^ subXor[u];
-                    c = totalXor ^ subXor[v];
-                } else if (isDescendant(v, u)) {
+                    a = subTreeXor[u];
+                    b = subTreeXor[v] ^ subTreeXor[u];
+                    c = tot_xor ^ subTreeXor[v];
+                } else if(isDescendant(v, u)){
                     // v is in subtree of u
-                    a = subXor[v];
-                    b = subXor[u] ^ subXor[v];
-                    c = totalXor ^ subXor[u];
+                    a = subTreeXor[v];
+                    b = subTreeXor[u] ^ subTreeXor[v];
+                    c = tot_xor ^ subTreeXor[u];
                 } else {
-                    // u and v are in different subtrees
-                    a = subXor[u];
-                    b = subXor[v];
-                    c = totalXor ^ subXor[u] ^ subXor[v];
+                    a = subTreeXor[u];
+                    b = subTreeXor[v];
+                    c = tot_xor ^ subTreeXor[v] ^ subTreeXor[u];
                 }
 
-                int maxX = max({a, b, c});
-                int minX = min({a, b, c});
+                int maxX = max({a, b, c}), minX = min({a, b, c});
                 minScore = min(minScore, maxX - minX);
             }
         }
