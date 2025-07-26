@@ -6,16 +6,19 @@ private:
     vector<int> inTime, outTime;
 
     int dfs(int node, int par, vector<int>& nums, vector<vector<int>>& graph){
-        inTime[node] = timer++;
+        inTime[node] = timer;
+        timer++;
+
         int xr = nums[node];
-        
         for(int &nnode : graph[node]){
             if(nnode == par) continue;
-            // timer++;
+            timer++;
             xr ^= dfs(nnode, node, nums, graph);
         }
 
-        outTime[node] = timer++;
+        outTime[node] = timer;
+        timer++;
+        
         return subTreeXor[node] = xr;
     }
 
