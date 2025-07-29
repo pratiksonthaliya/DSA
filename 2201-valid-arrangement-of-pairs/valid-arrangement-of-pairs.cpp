@@ -1,17 +1,17 @@
 class Solution {
 public:
     unordered_map<int, vector<int>> adj;
-    vector<int> res;
-    vector<vector<int>> ans;
+    //vector<vector<int>> ans;
+    vector<int> path;
 
     void dfs(int node){
         while(!adj[node].empty()){
             int nn = adj[node].back();
             adj[node].pop_back();
             dfs(nn);
-            ans.push_back({node, nn});
+            //ans.push_back({node, nn});
         }
-        //res.push_back(node);
+        path.push_back(node);
     }
     
     vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
@@ -36,13 +36,14 @@ public:
         if(stNode == -1) stNode = pairs[0][0];
         
         dfs(stNode);
-        reverse(ans.begin(), ans.end());
+        // reverse(ans.begin(), ans.end());
         // return ans;
 
-        // vector<vector<int>> ans;
-        // for(int i=0; i<res.size(); i++){
-        //     ans.push_back({res[i-1], res[i]});
-        // }
-        return ans;
+        reverse(path.begin(), path.end());
+        vector<vector<int>> res;
+        for(int i=1; i<path.size(); i++){
+            res.push_back({path[i-1], path[i]});
+        }
+        return res;
     }
 };
