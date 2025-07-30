@@ -1,7 +1,6 @@
 class Solution {
 public:
     unordered_map<int, vector<int>> adj;
-    //vector<vector<int>> ans;
     vector<int> path;
 
     void dfs(int node){
@@ -9,7 +8,6 @@ public:
             int nn = adj[node].back();
             adj[node].pop_back();
             dfs(nn);
-            //ans.push_back({node, nn});
         }
         path.push_back(node);
     }
@@ -34,16 +32,31 @@ public:
         }
 
         if(stNode == -1) stNode = pairs[0][0];
-        
-        dfs(stNode);
-        // reverse(ans.begin(), ans.end());
-        // return ans;
 
+
+        stack<int> st;
+        st.push(stNode);
+        while(!st.empty()){
+            int curr = st.top();
+            if(!adj[curr].empty()){
+                int next = adj[curr].back();
+                adj[curr].pop_back();
+                st.push(next);
+            } else {
+                path.push_back(curr);
+                st.pop();
+            }
+        }
+
+        
+        //dfs(stNode);
         reverse(path.begin(), path.end());
+        
         vector<vector<int>> res;
         for(int i=1; i<path.size(); i++){
             res.push_back({path[i-1], path[i]});
         }
+        
         return res;
     }
 };
