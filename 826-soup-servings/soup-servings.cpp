@@ -12,7 +12,6 @@ private:
         for(auto dir : dirs){
             ans += solve(a - dir[0], b - dir[1], dp);
         }
-
         return dp[a][b] = ans/4;
     }
 public:
