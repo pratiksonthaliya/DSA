@@ -1,25 +1,17 @@
 class Solution {
-private:
-    bool isPowOf2(int idx, string &s){
-        if(idx == s.size()){
-            if(s[0] == '0') return 0;
-
-            int n = stoi(s);
-            //cout << n << " ";
-            return !(n & (n-1));
-        }
-
-        bool isPow = false;
-        for(int i=idx; i<s.size(); i++){
-            swap(s[i], s[idx]);
-            isPow |= isPowOf2(idx+1, s);
-            swap(s[i], s[idx]);
-        }   
-        return isPow;
-    }
 public:
     bool reorderedPowerOf2(int n) {
+        long int num = 1;
+        unordered_set<string> pows;
+        while(num < INT_MAX){
+            string t = to_string(num);
+            sort(t.begin(), t.end());
+            pows.insert(t);
+            num = num * 2;
+        }
+
         string s = to_string(n);
-        return isPowOf2(0, s);
+        sort(s.begin(), s.end());
+        return pows.count(s);
     }
 };
