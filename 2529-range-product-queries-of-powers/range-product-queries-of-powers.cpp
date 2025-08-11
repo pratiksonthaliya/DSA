@@ -31,7 +31,12 @@ public:
 
         vector<int> ans;
         for(auto q : queries){
-            ans.push_back((pre[q[1]+1] * invMOD(pre[q[0]]))%MOD);
+            int pro = 1;
+            for(int i = q[0]; i <=q[1]; i++){
+                pro = (1LL * pro * pows[i])%MOD; 
+            }
+            ans.push_back(pro);
+            //ans.push_back((pre[q[1]+1] * invMOD(pre[q[0]]))%MOD);
         }
 
         return ans;
