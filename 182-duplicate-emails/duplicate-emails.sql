@@ -1,8 +1,10 @@
 # Write your MySQL query statement below
 
-SELECT email AS Email FROM (
-    SELECT email, COUNT(email) 
-    FROM Person
+with temp as (
+    select email,
+    COUNT(email) as cnt
+    from person
     GROUP BY email
-    HAVING COUNT(email) > 1
-) t;
+)
+
+select distinct email from temp where cnt > 1;
