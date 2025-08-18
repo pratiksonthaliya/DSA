@@ -1,6 +1,6 @@
 class Solution {
 private:
-    const double EPS = 1e-2;
+    const double EPS = 1e-6;
     bool dfs(vector<double>& nums){
         if(nums.size() == 1){
             return fabs(nums[0] - 24.0) < EPS;
