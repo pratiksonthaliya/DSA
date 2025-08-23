@@ -21,7 +21,7 @@ public:
                     len++;
                     
                     ans += len; // horizontal
-                    ans += (dp_row[i][j] - 1); // vertical
+                    //ans += (dp_row[i][j] - 1); // vertical
                     
                 } else {
                     len = 0;
@@ -29,7 +29,7 @@ public:
 
                 //rect
                 int mini = dp_row[i][j];
-                for(int k=j-1; k>=0; k--){
+                for(int k=j; k>=0; k--){
                     mini = min(dp_row[i][k], mini);
 
                     if(mini > 1) ans += (mini - 1);
