@@ -2,15 +2,25 @@ class Solution {
 private:
     map<char, vector<pair<char, long long>>> adj;
     
-    void dfs(char from, char to, long long cost, vector<vector<long long>> &cos){
-        cos[from - 'a'][to - 'a'] = cost;
+    void dijkstra(char from, vector<vector<long long>> &cos){
 
-        for(auto &x : adj[to]){
-            char nch = x.first;
-            long long ncost = cost + x.second;
+        priority_queue<pair<long long, char>, vector<pair<long long, char>>, greater<>> pq;
+        pq.push({0, from});
+        cos[from - 'a'][from - 'a'] = 0;
 
-            if(cos[from - 'a'][nch - 'a'] > ncost){
-                dfs(from, nch, ncost, cos);
+        while(!pq.empty()){
+            char ch = pq.top().second;
+            long long cost = pq.top().first;
+            pq.pop();
+
+            for(auto &x : adj[ch]){
+                char nch = x.first;
+                long long ncost = cost + x.second;
+
+                if(cos[from - 'a'][nch - 'a'] > ncost){
+                    cos[from - 'a'][nch - 'a'] = ncost;
+                    pq.push({ncost, nch});
+                }
             }
         }
     }
@@ -23,7 +33,7 @@ public:
 
         vector<vector<long long>> cos(26, vector<long long>(26, LLONG_MAX));
         for(char ch='a'; ch<='z'; ch++){
-            dfs(ch, ch, 0, cos);
+            dijkstra(ch, cos);
         }
 
         long long ans = 0;
