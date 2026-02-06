@@ -5,10 +5,10 @@ public:
         sort(nums.begin(), nums.end());
 
         int ans = n;
-        for(int i=0; i<n; i++){
-            int r = upper_bound(nums.begin(), nums.end(), 1LL * k * nums[i]) - nums.begin();
+        for(int i=0, j=0; i<n; i++){
+            while(j < n && 1LL * nums[i] * k >= nums[j]) j++;
 
-            ans = min(ans, n - (r-i));
+            ans = min(ans, n - (j-i));
         }
         return ans;
     }
