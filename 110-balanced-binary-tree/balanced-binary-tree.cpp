@@ -18,7 +18,10 @@ private:
         int l = height(root->left);
         int r = height(root->right);
 
-        if(abs(l-r) > 1) ans = false;
+        if(abs(l-r) > 1){
+            ans = false;
+            return 0;
+        } 
         return max(l, r) + 1;
     }
 public:
