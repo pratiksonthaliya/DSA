@@ -1,74 +1,43 @@
+#define ll long long
 class Solution {
 public:
-    int mono(const string& s){
-        if(s.empty()) return 0;
-        int cnt = 1;
-        int ans = 1;
-        for(int i = 1; i < (int)s.size(); i ++){
-            if(s[i] == s[i - 1]) cnt++;
-            else cnt = 1;
-            ans = max(ans, cnt);
-        }
-        return ans;
-    }
-
-    int duo(const string& s, char c1, char c2){
-        map<int, int> pos;
-        pos[0] = -1;
-        int ans = 0;
-        int delta = 0;
-        for(int i = 0; i < (int)s.size(); i ++){
-            if(s[i] != c1 && s[i] != c2){
-                pos.clear();
-                pos[0] = i;
-                delta = 0;
-                continue;
-            }
-            if(s[i] == c1){
-                delta++;
-            }
-            else{
-                delta--;
-            }
-            if(pos.find(delta) != pos.end()){
-                ans = max(ans, i - pos[delta]);
-            }
-            else{
-                pos[delta] = i;
-            }
-        }
-        return ans;
-    }
-
-    int trio(const string& s){
-        vector<int> cnt(3, 0);
-
-        map<vector<int>, int> pos;
-        pos[{0, 0}] = -1;
-
-        int ans = 0;
-
-        for(int i = 0; i < (int)s.size(); i++){
-            cnt[s[i] - 'a']++;
-
-            vector<int> key = {cnt[1] - cnt[0], cnt[2] - cnt[0]};
-
-            if(pos.find(key) != pos.end()){
-                ans = max(ans, i - pos[key]);
-            }
-            else{
-                pos[key] = i;
-            }
-        }
-        return ans;
-    }
     int longestBalanced(string s) {
-        return max({
-            mono(s),
-            duo(s, 'a', 'b'),
-            duo(s, 'a', 'c'),
-            duo(s, 'b', 'c'),
-            trio(s)
-        });
+        unordered_map<ll,ll> ab, bc, ca, abc;
+        ll cnta = 0, cntb = 0, cntc = 0;
+        ll longestLength = 1;
+
+        ab[0] = bc[0] = ca[0] = abc[0] = 0;
+
+        char currentChar = s[0];
+        ll len = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(currentChar == s[i]) len++;
+            else { len = 1; currentChar = s[i]; }
+            longestLength = max(longestLength, len);
+        }
+
+        for(int i = 0; i < s.length(); i++){
+            if(s[i] == 'a') cnta++;
+            else if(s[i] == 'b') cntb++;
+            else cntc++;
+
+            ll abId  = (ll)(cntb - cnta) << 32 | ((ll)cntc & 0xFFFFFFFFLL);
+            ll bcId  = (ll)(cntb - cntc) << 32 | ((ll)cnta & 0xFFFFFFFFLL);
+            ll caId  = (ll)(cntc - cnta) << 32 | ((ll)cntb & 0xFFFFFFFFLL);
+            ll abcId = (ll)(cntb - cnta) << 32 | ((ll)(cntc - cnta) & 0xFFFFFFFFLL);
+
+            if(!ab.count(abId)) ab[abId] = i + 1;
+            else longestLength = max(longestLength, i - ab[abId] + 1);
+
+            if(!bc.count(bcId)) bc[bcId] = i + 1;
+            else longestLength = max(longestLength, i - bc[bcId] + 1);
+
+            if(!ca.count(caId)) ca[caId] = i + 1;
+            else longestLength = max(longestLength, i - ca[caId] + 1);
+
+            if(!abc.count(abcId)) abc[abcId] = i + 1;
+            else longestLength = max(longestLength, i - abc[abcId] + 1);
+        }
+        return longestLength;
     }
 };
