@@ -14,8 +14,7 @@ public:
         for(int b=0; b<=turnedOn; b++){
             for(int hr : b_hr[b]){
                 for(int min : b_min[turnedOn - b]){
-                    ans.push_back(to_string(hr) + ":" + 
-                        (to_string(min).size() == 1 ? "0" + to_string(min) : to_string(min)));
+                    ans.push_back(to_string(hr) + ":" + (min < 10 ? "0" : "") + to_string(min));
                 }
             }
         }
