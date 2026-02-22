@@ -2,6 +2,7 @@ class Solution {
 public:
     int binaryGap(int n) {
         if((n&(n-1)) == 0) return 0;
+        if((n&(n+1)) == 0) return 1;
 
         int ans = 0, prev_1 = -1;
         for(int i=0; i<31; i++){
