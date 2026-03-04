@@ -1,35 +1,25 @@
 class Solution {
 public:
     int numSpecial(vector<vector<int>>& mat) {
-        int ans = 0;
-        for(int i=0; i<mat.size(); i++){
-            bool has1 = false;
-            for(int j=0; j<mat[0].size(); j++){
+        int n = mat.size(), m = mat[0].size();
+        vector<int> row_f(n, 0), col_f(m, 0);
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
                 if(mat[i][j]){
-                    
-                    if(has1){
-                        has1 = false;
-                        break;
-                    }
-                    has1 = true;
-
-                    int ct = 0;
-                    for(int k=0; k<mat.size(); k++){
-                        if(mat[k][j]){
-                            ct++;
-                            if(ct > 1) break;
-                        }
-                    }
-
-                    if(ct > 1){
-                        has1 = false;
-                        break;
-                    }
+                    row_f[i]++;
+                    col_f[j]++;
                 }
             }
-            if(has1) ans++;
         }
 
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == 1 && row_f[i] == 1 && col_f[j] == 1){
+                    ans++;
+                }
+            }            
+        }
         return ans;
     }
 };
