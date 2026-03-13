@@ -14,7 +14,7 @@ private:
     }
 public:
     long long minNumberOfSeconds(int mountainHeight, vector<int>& workerTimes) {
-        long long st = 0, en = 1LL * (*max_element(workerTimes.begin(), workerTimes.end())) * mountainHeight * (mountainHeight + 1) / 2;
+        long long st = 0, en = 1LL * (*min_element(workerTimes.begin(), workerTimes.end())) * mountainHeight * (mountainHeight + 1) / 2;
 
         long long ans = en;
         while(st <= en){
