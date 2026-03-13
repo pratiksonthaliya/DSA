@@ -1,25 +1,11 @@
 class Solution {
-
-    // 1 -> 1
-    // 3 -> 2
-    // 6 -> 3
-    // 10 -> 4
-    // 15 -> 5
-    // 21 -> 6
-    // 21 = (x) * (x+1) / 2;
-
-    // 0 = x^2 + x - 42
-
-    // x = -1 + sqrt(1 + 4 * 2*k) / 2
-
 private:
     bool isValid(long long t, int mountainHeight, vector<int>& workerTimes){
 
         for(int time : workerTimes){
 
-            long long k = t / time;
-
-            int x = (sqrt(1+ 8*k) - 1) / 2;
+            long long work = t / time;
+            int x = (sqrt(1+ 8*work) - 1) / 2;
 
             mountainHeight -= x;
             if(mountainHeight <= 0) return 1;
@@ -28,7 +14,7 @@ private:
     }
 public:
     long long minNumberOfSeconds(int mountainHeight, vector<int>& workerTimes) {
-        long long st = 0, en = 1e18 + 7;
+        long long st = 0, en = 1LL * (*max_element(workerTimes.begin(), workerTimes.end())) * mountainHeight * (mountainHeight + 1) / 2;
 
         long long ans = en;
         while(st <= en){
