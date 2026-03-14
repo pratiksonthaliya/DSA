@@ -9,7 +9,7 @@ private:
         }
 
         for(char ch : {'a', 'b', 'c'}){
-            if(s.back() != ch){
+            if(s.empty() || s.back() != ch){
                 s.push_back(ch);
                 makeStrings(s);
                 s.pop_back();
@@ -23,11 +23,10 @@ public:
 
         if(k > 3 * (1<<(n-1))) return "";
 
-        for(string s : {"a", "b", "c"}){
-            makeStrings(s);
-        }
+        string s;
+        makeStrings(s);
 
-        sort(strs.begin(), strs.end());
+        // sort(strs.begin(), strs.end());
         return strs[k-1];
     }
 };
