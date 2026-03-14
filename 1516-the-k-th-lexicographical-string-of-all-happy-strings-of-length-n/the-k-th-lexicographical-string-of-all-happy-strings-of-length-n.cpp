@@ -8,6 +8,8 @@ private:
             return;
         }
 
+        if(k < 0) return;
+
         for(char ch : {'a', 'b', 'c'}){
             if(s.empty() || s.back() != ch){
                 s.push_back(ch);
@@ -18,7 +20,6 @@ private:
     }
 public:
     string getHappyString(int n, int k) {
-        // 3 ^ 2 ^ 2 ^ 2
 
         if(k > 3 * (1<<(n-1))) return "";
 
