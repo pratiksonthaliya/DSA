@@ -8,11 +8,10 @@ public:
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
                 
-                pre[i][j] += grid[i][j];
-
-                if(i > 0) pre[i][j] += pre[i-1][j];
-                if(j > 0) pre[i][j] += pre[i][j-1];
-                if(i > 0 && j > 0) pre[i][j] -= pre[i-1][j-1];
+                pre[i][j] += grid[i][j] 
+                            + (i>0 ? pre[i-1][j] : 0) 
+                            + (j>0 ? pre[i][j-1] : 0) 
+                            - ((i>0 && j>0) ? pre[i-1][j-1] : 0);
                 
                 if(pre[i][j] <= k){
                     ans++;
