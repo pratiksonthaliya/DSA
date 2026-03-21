@@ -4,16 +4,14 @@ public:
         int n = grid.size(), m = grid[0].size();
 
         int ans = 0;
-        vector<vector<int>> pre(n, vector<int> (m, 0));
+        vector<int> col(m, 0);
         for(int i=0; i<n; i++){
+            int row = 0;
             for(int j=0; j<m; j++){
+                col[j] += grid[i][j];
+                row += col[j];
                 
-                pre[i][j] += grid[i][j] 
-                            + (i>0 ? pre[i-1][j] : 0) 
-                            + (j>0 ? pre[i][j-1] : 0) 
-                            - ((i>0 && j>0) ? pre[i-1][j-1] : 0);
-                
-                if(pre[i][j] <= k){
+                if(row <= k){
                     ans++;
                 } 
             }
