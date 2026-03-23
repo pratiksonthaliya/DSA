@@ -26,7 +26,6 @@ public:
             }
         }
 
-        long long ans = max(minProd[n-1][m-1], maxProd[n-1][m-1]);
-        return (ans < 0 ? -1 : ans%MOD);
+        return (maxProd[n-1][m-1] < 0 ? -1 : maxProd[n-1][m-1]%MOD);
     }
 };
