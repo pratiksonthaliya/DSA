@@ -15,6 +15,7 @@ private:
     }
 public:
     int minOperations(vector<vector<int>>& grid, int x) {
+
         vector<int> nums;
         for(auto &v : grid){
             for(int &num : v){
@@ -26,6 +27,12 @@ public:
         if(n == 1) return 0;
 
         sort(nums.begin(), nums.end());
+
+        long long avg = accumulate(nums.begin(), nums.end(), 0l) / nums.size();
+
+        int k1 = avg - avg%x;
+        int k2 = k1 + x;
+
         int ans = getAns(nums[n/2], x, nums);
         return (ans == INT_MAX) ? -1 : ans;
     }
